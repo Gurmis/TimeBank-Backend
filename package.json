@@ -1,0 +1,31 @@
+{
+  "name": "time-bank",
+  "version": "1.0.0",
+  "description": "TimeBank APP REST-API server built with node/express.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/Gurmo/time-bank.git"
+  },
+  "author": "Gurmis",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "bluebird": "^3.7.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.20"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/Gurmo/time-bank/issues"
+  },
+  "homepage": "https://gitlab.com/Gurmo/time-bank#readme"
+}
