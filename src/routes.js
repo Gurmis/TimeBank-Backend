@@ -92,6 +92,16 @@ router.get("/jobs/:id", async (req, res, next) => {
   }
 });
 
+// GET BY ID
+router.get("/users/:id/jobs", async (req, res, next) => {
+  try {
+    res.json(await jobController.getByUserId(req.params.id));
+  } catch (err) {
+    console.log(`Error while getting jobs of user with ID: ${req.params.id}`, err);
+    next(err);
+  }
+});
+
 // POST
 router.post("/jobs", async (req, res, next) => {
   try {

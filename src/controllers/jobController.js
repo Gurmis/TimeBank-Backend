@@ -84,6 +84,38 @@ async function getById(id) {
   const data = helper.emptyOrRows(formattedRows);
 console.log(formattedRows)
   return formattedRows;
+
+}
+// GET BY USER ID
+async function getByUserId(id) {
+  const rows = await db.query(
+    `SELECT j.id, j.name, j.description, j.duration, AVG(r.rating) AS averageRating, l.total_likes, u.id AS userId, u.first_name, u.last_name, u.phone_number, u.password 
+    FROM users u
+    LEFT JOIN jobs j 
+    ON j.user_id = u.id
+    LEFT JOIN (SELECT l.job_id, COUNT(*) as total_likes 
+     			FROM likes l
+     			GROUP BY l.job_id) l
+    ON j.id = l.job_id
+    LEFT JOIN ratings r
+    ON j.id = r.job_id
+    WHERE u.id = ${id}
+    GROUP BY j.id;`
+  );
+  const formattedRows = await rows.map(
+    (item) =>
+      (newJSON = {
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        duration: item.duration,
+        averageRating: item.averageRating,
+        likesCount: item.total_likes
+      })
+  );
+  const data = helper.emptyOrRows(formattedRows);
+console.log(formattedRows)
+  return formattedRows;
 }
 
 // POST
@@ -137,4 +169,5 @@ module.exports = {
   postNew,
   update,
   remove,
+  getByUserId
 };
