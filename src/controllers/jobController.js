@@ -51,7 +51,7 @@ async function getMultiple(page = 1, results = 10) {
 // GET BY ID
 async function getById(id) {
   const rows = await db.query(
-    `SELECT j.id, j.name, j.description, j.duration, AVG(r.rating) AS averageRating, l.total_likes, u.id AS userId, u.first_name, u.last_name, u.phone_number, u.password 
+    `SELECT j.id, j.name, j.description, j.duration, AVG(r.rating) AS averageRating, l.total_likes, u.id AS userId, u.first_name, u.last_name, u.phone_number 
     FROM jobs j
     LEFT JOIN users u 
     ON j.user_id = u.id
@@ -76,20 +76,18 @@ async function getById(id) {
           id: item.userId,
           firstName: item.first_name,
           lastName: item.last_name,
-          phoneNumber: item.phone_number,
-          password: item.password,
-        },
+          phoneNumber: item.phone_number
+              },
       })
   );
   const data = helper.emptyOrRows(formattedRows);
-console.log(formattedRows)
-  return formattedRows;
+  return data;
 
 }
 // GET BY USER ID
 async function getByUserId(id) {
   const rows = await db.query(
-    `SELECT j.id, j.name, j.description, j.duration, AVG(r.rating) AS averageRating, l.total_likes, u.id AS userId, u.first_name, u.last_name, u.phone_number, u.password 
+    `SELECT j.id, j.name, j.description, j.duration, AVG(r.rating) AS averageRating, l.total_likes, u.id AS userId, u.first_name, u.last_name, u.phone_number 
     FROM users u
     LEFT JOIN jobs j 
     ON j.user_id = u.id
@@ -110,7 +108,13 @@ async function getByUserId(id) {
         description: item.description,
         duration: item.duration,
         averageRating: item.averageRating,
-        likesCount: item.total_likes
+        likesCount: item.total_likes,
+        user: {
+          id: item.userId,
+          firstName: item.first_name,
+          lastName: item.last_name,
+          phoneNumber: item.phone_number,
+        },
       })
   );
   const data = helper.emptyOrRows(formattedRows);

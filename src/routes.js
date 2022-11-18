@@ -46,7 +46,7 @@ router.post("/users", async (req, res, next) => {
 // PUT
 router.put("/users/:id", async (req, res, next) => {
   try {
-    res.json(await userController.update(req.params.id, req.body));
+    res.json(await userController.updateUser(req.params.id, req.body));
   } catch (err) {
     console.log("Error while updating user", err);
     next(err);
@@ -141,6 +141,16 @@ router.get("/jobs/:id/hours", async (req, res, next) => {
     res.json(await hoursController.getHoursByJobId(req.params.id));
   } catch (err) {
     console.log(`Error while getting hours of job with ID: ${req.params.id}`, err);
+    next(err);
+  }
+});
+
+// GET HOURS BY USER ID
+router.get("/users/:id/hours", async (req, res, next) => {
+  try {
+    res.json(await hoursController.getHoursByUserId(req.params.id));
+  } catch (err) {
+    console.log(`Error while getting hours of user with ID: ${req.params.id}`, err);
     next(err);
   }
 });

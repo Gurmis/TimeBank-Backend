@@ -22,7 +22,7 @@ async function getMultiple(page = 1, results = 10) {
 // GET BY ID
 async function getById(id) {
   const rows = await db.query(
-    `SELECT *
+    `SELECT id, first_name, last_name, phone_number
      FROM users
      WHERE id = ${id};`
   );
@@ -49,7 +49,7 @@ async function postNew(user) {
 async function updateUser(id, user) {
   const update = await db.query(
     `UPDATE users
-    SET first_name = "${user.firstName}", last_name = "${user.lastName}", phone_number = "${user.phoneNumber}", password = "${user.password}"
+    SET first_name = "${user.firstName}", last_name = "${user.lastName}", phone_number = "${user.phoneNumber}"
     WHERE id = ${id};`
   );
 
