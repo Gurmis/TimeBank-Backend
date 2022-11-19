@@ -33,10 +33,19 @@ router.get("/users/:id", async (req, res, next) => {
   }
 });
 
+// LOGIN
+router.get("/login", async (req, res, next) => {
+  try {
+    res.json(await userController.login(req.body));
+  } catch (error) {
+    next(error)
+  }
+})
+
 // POST
 router.post("/users", async (req, res, next) => {
   try {
-    res.json(await userController.postNew(req.body));
+    res.json(await userController.registerUser(req.body));
   } catch (err) {
     console.log("Error while posting user", err);
     next(err);

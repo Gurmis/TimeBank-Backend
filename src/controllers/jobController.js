@@ -118,7 +118,6 @@ async function getByUserId(id) {
       })
   );
   const data = helper.emptyOrRows(formattedRows);
-console.log(formattedRows)
   return formattedRows;
 }
 

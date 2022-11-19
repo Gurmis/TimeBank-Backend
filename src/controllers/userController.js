@@ -1,6 +1,8 @@
 const db = require("./dbController");
 const helper = require("../helper");
 const config = require("../config/config");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 // GET ALL
 async function getMultiple(page = 1, results = 10) {
@@ -8,7 +10,7 @@ async function getMultiple(page = 1, results = 10) {
   const rows = await db.query(
     `SELECT *
       FROM users;`
-      // FROM users LIMIT ${offset},${results}`
+    // FROM users LIMIT ${offset},${results}`
   );
   const data = helper.emptyOrRows(rows);
   const meta = { page };
@@ -32,10 +34,12 @@ async function getById(id) {
 }
 
 // POST
-async function postNew(user) {
+
+async function registerUser(user) {
+  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
   const newUser = await db.query(
     `INSERT INTO users (first_name, last_name, phone_number, password)
-     VALUES ("${user.firstName}", "${user.lastName}", "${user.phoneNumber}", "${user.password}" )`
+     VALUES ("${user.firstName}", "${user.lastName}", "${user.phoneNumber}", "${hashedPassword}" )`
   );
   let message = "Error in creating user";
   if (newUser.affectedRows) {
@@ -67,7 +71,7 @@ async function deleteUser(id) {
     `DELETE FROM users
     WHERE id = ${id};`
   );
-  
+
   let message = "Error in deleting user";
   if (removal.affectedRows) {
     message = `user ID: ${id} deleted successfully`;
@@ -76,10 +80,30 @@ async function deleteUser(id) {
   return { message };
 }
 
+async function login(user) {
+  const rows = await db.query(
+    `SELECT *
+     FROM users
+     WHERE phone_number LIKE "${user.phoneNumber}";`
+  );
+  const data = helper.emptyOrRows(rows);
+  const passwordMatch = await bcrypt.compare(user.password, data[0].password);
+  const message = "Login credentials are invalid!";
+
+  if (!passwordMatch){
+    return {message};
+  } else {
+    return data
+  }
+
+  
+}
+
 module.exports = {
   getMultiple,
   getById,
-  postNew,
   updateUser,
-  deleteUser
+  deleteUser,
+  registerUser,
+  login,
 };
