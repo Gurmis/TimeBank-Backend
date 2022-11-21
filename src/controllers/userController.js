@@ -2,6 +2,7 @@ const db = require("./dbController");
 const helper = require("../helper");
 const config = require("../config/config");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 // GET ALL
@@ -31,22 +32,6 @@ async function getById(id) {
   const data = helper.emptyOrRows(rows);
 
   return data;
-}
-
-// POST
-
-async function registerUser(user) {
-  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-  const newUser = await db.query(
-    `INSERT INTO users (first_name, last_name, phone_number, password)
-     VALUES ("${user.firstName}", "${user.lastName}", "${user.phoneNumber}", "${hashedPassword}" )`
-  );
-  let message = "Error in creating user";
-  if (newUser.affectedRows) {
-    message = `user ${user.firstName} ${user.lastName} created successfully with ID: ${newUser.insertId}`;
-  }
-
-  return { message };
 }
 
 // PUT
@@ -80,30 +65,11 @@ async function deleteUser(id) {
   return { message };
 }
 
-async function login(user) {
-  const rows = await db.query(
-    `SELECT *
-     FROM users
-     WHERE phone_number LIKE "${user.phoneNumber}";`
-  );
-  const data = helper.emptyOrRows(rows);
-  const passwordMatch = await bcrypt.compare(user.password, data[0].password);
-  const message = "Login credentials are invalid!";
 
-  if (!passwordMatch){
-    return {message};
-  } else {
-    return data
-  }
-
-  
-}
 
 module.exports = {
   getMultiple,
   getById,
   updateUser,
   deleteUser,
-  registerUser,
-  login,
 };
