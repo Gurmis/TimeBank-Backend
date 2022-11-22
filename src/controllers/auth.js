@@ -39,13 +39,13 @@ async function login(user) {
   if (!passwordMatch) {
     return { message };
   }
-  
+
   const data = { id, firstName, lastName, phoneNumber };
   const token = await jwt.sign(data, process.env.JWT_SECRET, {
     expiresIn: expirationOneHour,
   });
 
-  return token;
+  return token; 
 }
 
 module.exports = {
