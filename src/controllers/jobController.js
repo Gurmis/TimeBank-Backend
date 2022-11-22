@@ -1,7 +1,7 @@
 const db = require("./dbController");
 const helper = require("../helper");
 const config = require("../config/config");
-
+const cookieParser = require('cookie-parser');
 // GET ALL
 async function getMultiple(page = 1, results = 10) {
   const offset = helper.getOffset(page, results);
@@ -41,6 +41,7 @@ async function getMultiple(page = 1, results = 10) {
 
   const data = helper.emptyOrRows(formattedRows);
   const meta = { page };
+  
 
   return {
     data,

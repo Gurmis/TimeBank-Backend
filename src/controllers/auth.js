@@ -1,4 +1,5 @@
 const db = require("./dbController");
+const { response } = require('express');
 const helper = require("../helper");
 const config = require("../config/config");
 const bcrypt = require("bcrypt");
@@ -22,30 +23,45 @@ async function registerUser(user) {
 }
 
 // LOGIN
-async function login(user) {
-  const rows = await db.query(
-    `SELECT id, first_name AS firstName, last_name AS lastName, phone_number AS phoneNumber, password
+async function login(req, res) {
+  try {
+    const {phoneNumber, password } = req.body;
+    const user = await db.query(
+      `SELECT id, first_name AS firstName, last_name AS lastName, phone_number AS phoneNumber, password
        FROM users
-       WHERE phone_number LIKE "${user.phoneNumber}";`
-  );
+       WHERE phone_number LIKE "${req.body.phoneNumber}";`
+    );
+    if (user.length == 0) {
+        return res.status(401).send({
+            error: "Login credentials are invalid"
+        })
+    };
 
-  let { id, firstName, lastName, phoneNumber, password } = rows[0];
+    const passwordMatch = await bcrypt.compare(
+      password,
+      user[0].password
+      );
+      delete user[0].password;
 
-  const passwordMatch = await bcrypt.compare(user.password, password);
-  password = "";
-
-  const message = "Login credentials are invalid!";
-
-  if (!passwordMatch) {
-    return { message };
+    if (!passwordMatch) {
+      return res.status(401).send({
+        error: "Login credentials are invalid",
+      });
+    } 
+    
+    else {
+      const token = await jwt.sign(user[0], process.env.JWT_SECRET, {
+        expiresIn: expirationOneHour,
+      });
+      res.cookie('token', token)
+      return res.send(token);
+    }
+  } catch (error) {
+    res.status(500).send({
+      error: "Server error. Please try again later.",
+    });
+    console.log(error)
   }
-
-  const data = { id, firstName, lastName, phoneNumber };
-  const token = await jwt.sign(data, process.env.JWT_SECRET, {
-    expiresIn: expirationOneHour,
-  });
-
-  return token; 
 }
 
 module.exports = {

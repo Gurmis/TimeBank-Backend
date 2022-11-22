@@ -35,18 +35,12 @@ router.get("/users/:id", async (req, res, next) => {
 });
 
 // LOGIN
-router.get("/login", async (req, res, next) => {
-  try {
-    res.json(await auth.login(req.body));
-  } catch (error) {
-    next(error)
-  }
-})
+router.get("/login", auth.login)
 
 // REGISTER USER
 router.post("/users", async (req, res, next) => {
   try {
-    res.json(await auth.registerUser(req.body));
+    await res.json(auth.registerUser(req.body));
   } catch (err) {
     console.log("Error while posting user", err);
     next(err);
