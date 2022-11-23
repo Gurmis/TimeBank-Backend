@@ -7,20 +7,7 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 const expirationOneHour = 60 * 60;
 
-// REGISTER USER
-async function registerUser(user) {
-  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-  const newUser = await db.query(
-    `INSERT INTO users (first_name, last_name, phone_number, password)
-       VALUES ("${user.firstName}", "${user.lastName}", "${user.phoneNumber}", "${hashedPassword}" )`
-  );
-  let message = "Error in creating user";
-  if (newUser.affectedRows) {
-    message = `user ${user.firstName} ${user.lastName} created successfully with ID: ${newUser.insertId}`;
-  }
 
-  return { message };
-}
 
 // LOGIN
 async function login(req, res) {
@@ -65,6 +52,5 @@ async function login(req, res) {
 }
 
 module.exports = {
-  registerUser,
   login,
 };

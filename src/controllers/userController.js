@@ -1,4 +1,5 @@
 const db = require("./dbController");
+const { response } = require("express");
 const helper = require("../helper");
 const config = require("../config/config");
 const bcrypt = require("bcrypt");
@@ -9,7 +10,7 @@ const saltRounds = 10;
 async function getMultiple(page = 1, results = 10) {
   const offset = helper.getOffset(page, results);
   const rows = await db.query(
-    `SELECT *
+    `SELECT id, first_name, last_name, phone_number, role
       FROM users;`
     // FROM users LIMIT ${offset},${results}`
   );
@@ -25,13 +26,45 @@ async function getMultiple(page = 1, results = 10) {
 // GET BY ID
 async function getById(id) {
   const rows = await db.query(
-    `SELECT id, first_name, last_name, phone_number
+    `SELECT id, first_name, last_name, phone_number, role
      FROM users
      WHERE id = ${id};`
   );
   const data = helper.emptyOrRows(rows);
 
   return data;
+}
+
+// REGISTER USER
+async function registerUser(req, res) {
+  try {
+    const duplicate = await db.query(
+      `SELECT id, first_name, last_name, phone_number, role
+       FROM users
+       WHERE phone_number LIKE "${req.body.phoneNumber}";`
+    );
+
+    if (!duplicate.length == 0) {
+      return res
+        .status(401)
+        .send({
+          message: "Phone number already exists in the database!",
+        });
+    }
+
+    const hashedPassword = await bcrypt.hash(
+      req.body.password,
+      saltRounds
+    );
+    const newUser = await db.query(
+      `INSERT INTO users (first_name, last_name, phone_number, password, role)
+         VALUES ("${req.body.firstName}", "${req.body.lastName}", "${req.body.phoneNumber}", "${hashedPassword}", "user" )`
+    );
+    const message = `user ${req.body.firstName} ${req.body.lastName} created successfully`;
+    res.status(200).send({ message });
+  } catch (error) {
+    res.status(500).send({ error });
+  }
 }
 
 // PUT
@@ -65,11 +98,10 @@ async function deleteUser(id) {
   return { message };
 }
 
-
-
 module.exports = {
   getMultiple,
   getById,
+  registerUser,
   updateUser,
   deleteUser,
 };
