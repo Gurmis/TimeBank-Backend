@@ -38,69 +38,22 @@ router.delete("/users/:id", userController.deleteUser);
 //*****JOBS**********************************************************************//
 
 // GET ALL
-router.get("/jobs", async (req, res, next) => {
-  try {
-    res.json(
-      await jobController.getMultiple(
-        req.query.page,
-        req.query.results
-      )
-    );
-  } catch (err) {
-    console.log("Error while getting jobs", err);
-    next(err);
-  }
-});
+router.get("/jobs", jobController.getMultiple);
 
 // GET BY ID
-router.get("/jobs/:id", async (req, res, next) => {
-  try {
-    res.json(await jobController.getById(req.params.id));
-  } catch (err) {
-    console.log(`Error while getting job with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.get("/jobs/:id", jobController.getById);
 
 // GET BY ID
-router.get("/users/:id/jobs", async (req, res, next) => {
-  try {
-    res.json(await jobController.getByUserId(req.params.id));
-  } catch (err) {
-    console.log(`Error while getting jobs of user with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.get("/users/:id/jobs", jobController.getByUserId);
 
 // POST
-router.post("/jobs", async (req, res, next) => {
-  try {
-    res.json(await jobController.postNew(req.body));
-  } catch (err) {
-    console.log("Error while posting job", err);
-    next(err);
-  }
-});
+router.post("/jobs", jobController.postNew);
 
 // PUT
-router.put("/jobs/:id", async (req, res, next) => {
-  try {
-    res.json(await jobController.update(req.params.id, req.body));
-  } catch (err) {
-    console.log("Error while updating job", err);
-    next(err);
-  }
-});
+router.put("/jobs/:id", jobController.update);
 
 // DELETE
-router.delete("/jobs/:id", async (req, res, next) => {
-  try {
-    res.json(await jobController.remove(req.params.id));
-  } catch (err) {
-    console.log("Error while deleting job", err);
-    next(err);
-  }
-});
+router.delete("/jobs/:id", jobController.remove);
 
 
 
