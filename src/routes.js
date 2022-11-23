@@ -1,28 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("./controllers/userController");
-const jobController = require("./controllers/jobController");
-const hoursController = require("./controllers/hoursController");
-const likesController = require("./controllers/likesController");
-const ratingsController = require("./controllers/ratingsController");
-const auth = require("./controllers/auth");
+const userController = require("./controllers/UserController");
+const jobController = require("./controllers/JobController");
+const hoursController = require("./controllers/HoursController");
+const likesController = require("./controllers/LikesController");
+const ratingsController = require("./controllers/RatingsController");
+const authenticationController = require("./controllers/AuthenticationController");
+const authorizationController = require("./controllers/AuthorizationController");
 
 //*****USERS***************************************************************//
 
 // GET ALL
-router.get("/users", async (req, res, next) => {
-  try {
-    res.json(
-      await userController.getMultiple(
-        req.query.page,
-        req.query.results
-      )
-    );
-  } catch (err) {
-    console.log("Error while getting users", err);
-    next(err);
-  }
-});
+router.get("/users", userController.getMultiple)
 
 // GET BY ID
 router.get("/users/:id", async (req, res, next) => {
@@ -34,11 +23,16 @@ router.get("/users/:id", async (req, res, next) => {
   }
 });
 
-// LOGIN
-router.get("/login", auth.login)
-
+router.get('/test', authorizationController.validateLogin )
 // REGISTER USER
 router.post("/users", userController.registerUser);
+
+// LOGIN
+router.get("/login", authenticationController.login);
+
+// LOGOUT
+router.get("/logout", authenticationController.logout);
+
 
 // PUT
 router.put("/users/:id", async (req, res, next) => {

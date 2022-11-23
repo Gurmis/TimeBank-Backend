@@ -1,4 +1,4 @@
-const db = require("./dbController");
+const db = require("./DbController");
 const helper = require("../helper");
 const config = require("../config/config");
 

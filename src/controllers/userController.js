@@ -1,4 +1,4 @@
-const db = require("./dbController");
+const db = require("./DbController");
 const { response } = require("express");
 const helper = require("../helper");
 const config = require("../config/config");
@@ -7,20 +7,31 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 // GET ALL
-async function getMultiple(page = 1, results = 10) {
-  const offset = helper.getOffset(page, results);
-  const rows = await db.query(
-    `SELECT id, first_name, last_name, phone_number, role
+async function getMultiple(req, res, next) {
+  try {
+    const page = req.query.page || 1;
+    const results = req.query.results || 10;
+    const offset = helper.getOffset(page, results);
+    const rows = await db.query(
+      `SELECT id, first_name, last_name, phone_number, role
       FROM users;`
-    // FROM users LIMIT ${offset},${results}`
-  );
-  const data = helper.emptyOrRows(rows);
-  const meta = { page };
+      // FROM users LIMIT ${offset},${results}`
+    );
+    const data = helper.emptyOrRows(rows);
+    const meta = { page };
 
-  return {
-    data,
-    meta,
-  };
+    res.send({
+      data,
+      meta,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({
+        message: "Something went wrong, please try again later.",
+      });
+    console.log(error);
+  }
 }
 
 // GET BY ID
@@ -45,11 +56,9 @@ async function registerUser(req, res) {
     );
 
     if (!duplicate.length == 0) {
-      return res
-        .status(401)
-        .send({
-          message: "Phone number already exists in the database!",
-        });
+      return res.status(401).send({
+        message: "Phone number already exists in the database!",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(

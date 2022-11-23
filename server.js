@@ -1,10 +1,11 @@
 require("dotenv").config();
-const { application } = require("express");
+// const { application } = require("express");
 const express = require("express");
 const config = require("./src/config/config");
 const app = express();
 const db = require("./src/controllers/dbController");
 const routes = require("./src/routes");
+const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const allowedOrigins = [
   "http://localhost:4200",
@@ -25,12 +26,7 @@ app.use(
   })
 );
 
-// app.use(
-//     express.json({
-//         type: ["application/json", "text/plain"]
-//     })
-// );
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(
   express.urlencoded({
