@@ -30,20 +30,29 @@ async function getMultiple(req, res, next) {
       .send({
         message: "Something went wrong, please try again later.",
       });
-    console.log(error);
+
   }
 }
 
 // GET BY ID
-async function getById(id) {
-  const rows = await db.query(
-    `SELECT id, first_name, last_name, phone_number, role
-     FROM users
-     WHERE id = ${id};`
-  );
-  const data = helper.emptyOrRows(rows);
-
-  return data;
+async function getById(req, res, next) {
+  try {
+    const rows = await db.query(
+      `SELECT id, first_name, last_name, phone_number, role
+       FROM users
+       WHERE id = ${req.params.id};`
+    );
+    const data = helper.emptyOrRows(rows);
+  
+    return res.send(data);
+    
+  } catch (error) {
+    res
+      .status(500)
+      .send({
+        message: "Something went wrong, please try again later.",
+      });
+  }
 }
 
 // REGISTER USER

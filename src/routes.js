@@ -14,14 +14,7 @@ const authorizationController = require("./controllers/AuthorizationController")
 router.get("/users", userController.getMultiple)
 
 // GET BY ID
-router.get("/users/:id", async (req, res, next) => {
-  try {
-    res.json(await userController.getById(req.params.id));
-  } catch (err) {
-    console.log(`Error while getting user with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.get("/users/:id", userController.getById);
 
 router.get('/test', authorizationController.validateLogin )
 // REGISTER USER
