@@ -107,18 +107,23 @@ async function updateUser(req, res, next) {
 }
 
 // DELETE
-async function deleteUser(id) {
-  const removal = await db.query(
-    `DELETE FROM users
-    WHERE id = ${id};`
-  );
+async function deleteUser(req, res, next) {
+  try {
+    const removal = await db.query(
+      `DELETE FROM users
+      WHERE id = ${req.params.id};`
+    );
+  
+    let message = "Error in deleting user";
+    if (removal.affectedRows) {
+      message = `user ID: ${req.params.id} deleted successfully`;
+    }
+  
+    res.status(200).send({ message });    
+  } catch (error) {
+    res.status(500).send({ error });
 
-  let message = "Error in deleting user";
-  if (removal.affectedRows) {
-    message = `user ID: ${id} deleted successfully`;
   }
-
-  return { message };
 }
 
 module.exports = {

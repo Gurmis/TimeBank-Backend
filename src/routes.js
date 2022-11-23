@@ -16,7 +16,8 @@ router.get("/users", userController.getMultiple)
 // GET BY ID
 router.get("/users/:id", userController.getById);
 
-router.get('/test', authorizationController.validateLogin )
+router.get('/test', authorizationController.validateLogin );
+
 // REGISTER USER
 router.post("/users", userController.registerUser);
 
@@ -30,14 +31,7 @@ router.get("/logout", authenticationController.logout);
 router.put("/users/:id", userController.updateUser);
 
 // DELETE
-router.delete("/users/:id", async (req, res, next) => {
-  try {
-    res.json(await userController.remove(req.params.id));
-  } catch (err) {
-    console.log("Error while deleting user", err);
-    next(err);
-  }
-});
+router.delete("/users/:id", userController.deleteUser);
 
 
 
