@@ -26,16 +26,8 @@ router.get("/login", authenticationController.login);
 // LOGOUT
 router.get("/logout", authenticationController.logout);
 
-
 // PUT
-router.put("/users/:id", async (req, res, next) => {
-  try {
-    res.json(await userController.updateUser(req.params.id, req.body));
-  } catch (err) {
-    console.log("Error while updating user", err);
-    next(err);
-  }
-});
+router.put("/users/:id", userController.updateUser);
 
 // DELETE
 router.delete("/users/:id", async (req, res, next) => {

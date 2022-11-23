@@ -28,7 +28,7 @@ async function getMultiple(req, res, next) {
     res
       .status(500)
       .send({
-        message: "Something went wrong, please try again later.",
+        error,
       });
 
   }
@@ -50,7 +50,7 @@ async function getById(req, res, next) {
     res
       .status(500)
       .send({
-        message: "Something went wrong, please try again later.",
+        error,
       });
   }
 }
@@ -86,19 +86,24 @@ async function registerUser(req, res) {
 }
 
 // PUT
-async function updateUser(id, user) {
-  const update = await db.query(
-    `UPDATE users
-    SET first_name = "${user.firstName}", last_name = "${user.lastName}", phone_number = "${user.phoneNumber}"
-    WHERE id = ${id};`
-  );
-
-  let message = "Error in updating user";
-  if (update.affectedRows) {
-    message = `user ID: ${id} updated successfully`;
+async function updateUser(req, res, next) {
+  try {
+    const update = await db.query(
+      `UPDATE users
+      SET first_name = "${req.body.firstName}", last_name = "${req.body.lastName}", phone_number = "${req.body.phoneNumber}"
+      WHERE id = ${req.params.id};`
+    );
+  
+    let message = "Error in updating user";
+    if (update.affectedRows) {
+      message = `user ID: ${req.params.id} updated successfully`;
+    }
+  
+    res.status(200).send({ message });
+    
+  } catch (error) {
+    res.status(500).send({ error });
   }
-
-  return { message };
 }
 
 // DELETE
