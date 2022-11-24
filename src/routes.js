@@ -8,6 +8,8 @@ const ratingsController = require("./controllers/RatingsController");
 const authenticationController = require("./controllers/AuthenticationController");
 const authorizationController = require("./controllers/AuthorizationController");
 
+
+
 //*****USERS***************************************************************//
 
 // GET ALL
@@ -58,35 +60,15 @@ router.delete("/jobs/:id", jobController.remove);
 
 
 //*****HOURS***************************************************************//
+
 // GET HOURS BY JOB ID
-router.get("/jobs/:id/hours", async (req, res, next) => {
-  try {
-    res.json(await hoursController.getHoursByJobId(req.params.id));
-  } catch (err) {
-    console.log(`Error while getting hours of job with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.get("/jobs/:id/hours", hoursController.getHoursByJobId);
 
 // GET HOURS BY USER ID
-router.get("/users/:id/hours", async (req, res, next) => {
-  try {
-    res.json(await hoursController.getHoursByUserId(req.params.id));
-  } catch (err) {
-    console.log(`Error while getting hours of user with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.get("/users/:id/hours", hoursController.getHoursByUserId);
 
 //POST HOURS
-router.post("/jobs/:id/hours", async (req, res, next) => {
-  try {
-    res.json(await hoursController.addHours(req.params.id, req.body));
-  } catch (err) {
-    console.log(`Error while adding hours of job with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.post("/jobs/:id/hours", hoursController.addHours);
 
 
 //*****LIKES***************************************************************//
