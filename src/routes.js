@@ -73,45 +73,17 @@ router.post("/jobs/:id/hours", hoursController.addHours);
 
 //*****LIKES***************************************************************//
 // GET LIKES BY JOB ID
-router.get("/jobs/:id/likes", async (req, res, next) => {
-  try {
-    res.json(await likesController.getLikesByJobId(req.params.id));
-  } catch (err) {
-    console.log(`Error while getting likes of job with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.get("/jobs/:id/likes", likesController.getLikesByJobId);
 
 //POST HOURS
-router.post("/jobs/:id/likes", async (req, res, next) => {
-  try {
-    res.json(await likesController.addLike(req.params.id));
-  } catch (err) {
-    console.log(`Error while adding hours of job with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.post("/jobs/:id/likes", likesController.addLike);
 
 //*****RATINGS***************************************************************//
 // GET RATINGS BY JOB ID
-router.get("/jobs/:id/ratings", async (req, res, next) => {
-  try {
-    res.json(await ratingsController.getRatingsByJobId(req.params.id));
-  } catch (err) {
-    console.log(`Error while getting ratings of job with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.get("/jobs/:id/ratings", ratingsController.getRatingsByJobId);
 
 //POST RATINGS
-router.post("/jobs/:id/ratings", async (req, res, next) => {
-  try {
-    res.json(await ratingsController.addRating(req.params.id, req.body));
-  } catch (err) {
-    console.log(`Error while adding reting of job with ID: ${req.params.id}`, err);
-    next(err);
-  }
-});
+router.post("/jobs/:id/ratings", ratingsController.addRating);
 
 
 

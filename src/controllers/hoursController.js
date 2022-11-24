@@ -61,7 +61,7 @@ async function addHours(req, res, next) {
       message = `Hours for Job ID: ${id} successfully recorded`;
     }
   
-    res.send(message);
+    res.send({message});
     
   } catch (error) {
     res.status(500).send({error})
