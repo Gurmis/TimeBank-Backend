@@ -27,7 +27,7 @@ router.get("/login", authenticationController.login);
 // LOGOUT
 router.get("/logout", authenticationController.logout);
 
-// PUT
+// PUT 
 router.put("/users/:id", userController.updateUser);
 
 // DELETE

@@ -41,7 +41,7 @@ async function login(req, res) {
         httpOnly: false,
         secure: false,
       });
-
+      
       return res.send(token);
     }
   } catch (error) {
