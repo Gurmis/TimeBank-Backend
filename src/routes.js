@@ -33,7 +33,7 @@ router.get("/logout", authenticationController.logout);
 router.put("/users/:id", userController.updateUser);
 
 // DELETE
-router.delete("/users/:id", userController.deleteUser);
+router.delete("/users/:id", authorizationController.validateLogin, userController.deleteUser);
 
 
 
@@ -71,23 +71,26 @@ router.get("/users/:id/hours", hoursController.getHoursByUserId);
 router.post("/jobs/:id/hours", hoursController.addHours);
 
 
+
+
+
 //*****LIKES***************************************************************//
+
 // GET LIKES BY JOB ID
 router.get("/jobs/:id/likes", likesController.getLikesByJobId);
 
 //POST HOURS
 router.post("/jobs/:id/likes", likesController.addLike);
 
+
+
 //*****RATINGS***************************************************************//
+
 // GET RATINGS BY JOB ID
 router.get("/jobs/:id/ratings", ratingsController.getRatingsByJobId);
 
 //POST RATINGS
 router.post("/jobs/:id/ratings", ratingsController.addRating);
-
-
-
-
 
 
 
