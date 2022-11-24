@@ -63,7 +63,7 @@ router.delete("/jobs/:id", jobController.remove);
 router.get("/jobs/:id/hours", hoursController.getHoursByJobId);
 
 // GET HOURS BY USER ID
-router.get("/users/:id/hours", hoursController.getHoursByUserId);
+router.get("/users/:id/hours", authorizationController.validateUserAccess, hoursController.getHoursByUserId);
 
 //POST HOURS
 router.post("/jobs/:id/hours", hoursController.addHours);
