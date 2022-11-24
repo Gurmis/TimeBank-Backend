@@ -95,6 +95,11 @@ async function getById(req, res, next) {
   }
 
 }
+
+
+
+
+
 // GET BY USER ID
 async function getByUserId(req, res, next) {
   try {
@@ -200,11 +205,22 @@ async function remove(req, res, next) {
   }
 }
 
+// GET USER ID BY JOB ID
+async function getUserIdByJobId(jobId) {
+  const data = await db.query(
+    `SELECT user_Id AS userId
+    FROM jobs j
+    WHERE j.id = ${jobId}`
+  )
+  return data;
+}
+
 module.exports = {
   getMultiple,
   getById,
   postNew,
   update,
   remove,
-  getByUserId
+  getByUserId,
+  getUserIdByJobId
 };

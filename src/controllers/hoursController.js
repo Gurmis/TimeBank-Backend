@@ -37,7 +37,6 @@ async function getHoursByUserId(req, res, next) {
       WHERE jo.user_id  = ${id};`
     );
     const data = helper.emptyOrRows(rows);
-  
     res.send(data);
     
   } catch (error) {

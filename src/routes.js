@@ -7,19 +7,9 @@ const likesController = require("./controllers/LikesController");
 const ratingsController = require("./controllers/RatingsController");
 const authenticationController = require("./controllers/AuthenticationController");
 const authorizationController = require("./controllers/AuthorizationController");
+const AuthorizationController = require("./controllers/AuthorizationController");
 
 
-
-//*****USERS***************************************************************//
-
-// GET ALL
-router.get("/users", userController.getMultiple)
-
-// GET BY ID
-router.get("/users/:id", userController.getById);
-
-// REGISTER USER
-router.post("/users", userController.registerUser);
 
 // LOGIN
 router.get("/login", authenticationController.login);
@@ -27,8 +17,22 @@ router.get("/login", authenticationController.login);
 // LOGOUT
 router.get("/logout", authenticationController.logout);
 
+
+
+//*****USERS***************************************************************//
+
+// GET ALL
+router.get("/users", authorizationController.validateJwtToken, userController.getMultiple)
+
+// GET BY ID
+router.get("/users/:id",  authorizationController.validateJwtToken, userController.getById);
+
+// REGISTER USER
+router.post("/users",  authorizationController.validateJwtToken, userController.registerUser);
+
+
 // PUT 
-router.put("/users/:id", userController.updateUser);
+router.put("/users/:id",  authorizationController.validateJwtToken, userController.updateUser);
 
 // DELETE
 router.delete("/users/:id", authorizationController.validateUserRole, userController.deleteUser);
@@ -38,35 +42,35 @@ router.delete("/users/:id", authorizationController.validateUserRole, userContro
 //*****JOBS**********************************************************************//
 
 // GET ALL
-router.get("/jobs", jobController.getMultiple);
+router.get("/jobs",  authorizationController.validateJwtToken, jobController.getMultiple);
 
 // GET BY ID
-router.get("/jobs/:id", jobController.getById);
+router.get("/jobs/:id",  authorizationController.validateJwtToken, jobController.getById);
 
 // GET BY ID
-router.get("/users/:id/jobs", jobController.getByUserId);
+router.get("/users/:id/jobs",  authorizationController.validateJwtToken, jobController.getByUserId);
 
 // POST
-router.post("/jobs", jobController.postNew);
+router.post("/jobs",  authorizationController.validateJwtToken, jobController.postNew);
 
 // PUT
-router.put("/jobs/:id", jobController.update);
+router.put("/jobs/:id",  authorizationController.validateJwtToken, jobController.update);
 
 // DELETE
-router.delete("/jobs/:id", jobController.remove);
+router.delete("/jobs/:id", authorizationController.validateAccessByJob, jobController.remove);
 
 
 
 //*****HOURS***************************************************************//
 
 // GET HOURS BY JOB ID
-router.get("/jobs/:id/hours", hoursController.getHoursByJobId);
+router.get("/jobs/:id/hours", authorizationController.validateAccessByJob, hoursController.getHoursByJobId);
 
 // GET HOURS BY USER ID
-router.get("/users/:id/hours", authorizationController.validateUserAccess, hoursController.getHoursByUserId);
+router.get("/users/:id/hours", authorizationController.validateAccessByUser, hoursController.getHoursByUserId);
 
 //POST HOURS
-router.post("/jobs/:id/hours", hoursController.addHours);
+router.post("/jobs/:id/hours",  authorizationController.validateJwtToken, hoursController.addHours);
 
 
 
@@ -75,20 +79,20 @@ router.post("/jobs/:id/hours", hoursController.addHours);
 //*****LIKES***************************************************************//
 
 // GET LIKES BY JOB ID
-router.get("/jobs/:id/likes", likesController.getLikesByJobId);
+router.get("/jobs/:id/likes",  authorizationController.validateJwtToken, likesController.getLikesByJobId);
 
 //POST HOURS
-router.post("/jobs/:id/likes", likesController.addLike);
+router.post("/jobs/:id/likes",  authorizationController.validateJwtToken, likesController.addLike);
 
 
 
 //*****RATINGS***************************************************************//
 
 // GET RATINGS BY JOB ID
-router.get("/jobs/:id/ratings", ratingsController.getRatingsByJobId);
+router.get("/jobs/:id/ratings",  authorizationController.validateJwtToken, ratingsController.getRatingsByJobId);
 
 //POST RATINGS
-router.post("/jobs/:id/ratings", ratingsController.addRating);
+router.post("/jobs/:id/ratings",  authorizationController.validateJwtToken, ratingsController.addRating);
 
 
 
