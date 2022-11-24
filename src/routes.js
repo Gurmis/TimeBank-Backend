@@ -18,8 +18,6 @@ router.get("/users", userController.getMultiple)
 // GET BY ID
 router.get("/users/:id", userController.getById);
 
-router.get('/test', authorizationController.validateLogin );
-
 // REGISTER USER
 router.post("/users", userController.registerUser);
 
@@ -33,7 +31,7 @@ router.get("/logout", authenticationController.logout);
 router.put("/users/:id", userController.updateUser);
 
 // DELETE
-router.delete("/users/:id", authorizationController.validateLogin, userController.deleteUser);
+router.delete("/users/:id", authorizationController.validateUserRole, userController.deleteUser);
 
 
 

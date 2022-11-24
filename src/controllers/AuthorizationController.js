@@ -1,7 +1,7 @@
 const jwt_decode = require("jwt-decode");
 
 module.exports = {
-  async validateLogin(req, res, next) {
+  async validateUserRole(req, res, next) {
     const token = req.cookies.token;
 
     if (token) {
