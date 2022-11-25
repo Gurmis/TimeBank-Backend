@@ -64,6 +64,7 @@ module.exports = {
           process.env.JWT_SECRET
         );
         const userId = await jobController.getUserIdByJobId(req.params.id);
+        
         if (verified.role == "admin") {
           next();
         }

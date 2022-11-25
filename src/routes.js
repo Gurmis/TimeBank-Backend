@@ -11,6 +11,9 @@ const AuthorizationController = require("./controllers/AuthorizationController")
 
 
 
+// REGISTER USER
+router.post("/users", userController.registerUser);
+
 // LOGIN
 router.get("/login", authenticationController.login);
 
@@ -27,8 +30,6 @@ router.get("/users", authorizationController.validateJwtToken, userController.ge
 // GET BY ID
 router.get("/users/:id",  authorizationController.validateJwtToken, userController.getById);
 
-// REGISTER USER
-router.post("/users",  authorizationController.validateJwtToken, userController.registerUser);
 
 
 // PUT 

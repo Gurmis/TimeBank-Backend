@@ -1,6 +1,7 @@
 const db = require("./DbController");
 const helper = require("../helper");
 const config = require("../config/config");
+const jwt = require('jsonwebtoken');
 
 // GET BY JOB ID
 async function getHoursByJobId(req, res, next) {
@@ -47,12 +48,14 @@ async function getHoursByUserId(req, res, next) {
 // POST
 async function addHours(req, res, next) {
   try {
+    const token = req.cookies.token;
+    const decoded = await jwt.decode(token);
     const id = req.params.id;
     const hours = req.body;
     const newHours = await db.query(
       `INSERT INTO hours (job_id, user_from_id, date_finished, amount)
         VALUES
-        (${id}, ${hours.userFromId}, (SELECT CURRENT_TIMESTAMP()), ${hours.amount});`
+        (${id}, ${decoded.id}, (SELECT CURRENT_TIMESTAMP()), ${hours.amount});`
     );
   
     let message = "Error in adding hours";

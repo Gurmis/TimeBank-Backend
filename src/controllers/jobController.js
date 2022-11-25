@@ -2,7 +2,10 @@ const db = require("./DbController");
 const helper = require("../helper");
 const config = require("../config/config");
 const { response } = require("express");
-const cookieParser = require('cookie-parser');
+
+const jwt = require('jsonwebtoken');
+
+
 // GET ALL
 async function getMultiple(req, res, next) {
   try {
@@ -46,7 +49,6 @@ async function getMultiple(req, res, next) {
     const data = helper.emptyOrRows(formattedRows);
     const meta = { page };
     
-  
     res.send({data, meta});
     
   } catch (error) {
@@ -89,6 +91,7 @@ async function getById(req, res, next) {
     );
     const data = helper.emptyOrRows(formattedRows);
     res.send(data)
+    
     
   } catch (error) {
     res.status(500).send({error})
@@ -145,10 +148,12 @@ async function getByUserId(req, res, next) {
 // POST
 async function postNew(req, res, next) {
   try {
+    const token = req.cookies.token;
+    const decoded = await jwt.decode(token);
     const job = req.body;
     const newJob = await db.query(
       `INSERT INTO jobs (name, description, duration, user_id)
-       VALUES ("${job.name}", "${job.description}", "${job.duration}", "${job.userId}" )`
+       VALUES ("${job.name}", "${job.description}", "${job.duration}", "${decoded.id}" )`
     );
     let message = "Error in creating user";
     if (newJob.affectedRows) {
@@ -172,7 +177,6 @@ async function update(req, res, next) {
       SET name = "${job.name}", description = "${job.description}", duration = "${job.duration}"
       WHERE id = ${id};`
     );
-  console.log(id)
     let message = "Error in updating job";
     if (update.affectedRows) {
       message = `job ID: ${id} updated successfully`;
