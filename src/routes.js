@@ -15,7 +15,7 @@ const AuthorizationController = require("./controllers/AuthorizationController")
 router.post("/users", userController.registerUser);
 
 // LOGIN
-router.get("/login", authenticationController.login);
+router.post("/login", authenticationController.login);
 
 // LOGOUT
 router.get("/logout", authenticationController.logout);
