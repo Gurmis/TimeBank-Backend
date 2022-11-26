@@ -1,4 +1,4 @@
-const db = require("./DbController");
+const db = require("./dbController");
 const helper = require("../helper");
 const config = require("../config/config");
 const jwt = require('jsonwebtoken');
