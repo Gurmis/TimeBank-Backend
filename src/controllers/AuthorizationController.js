@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const jobController = require('./JobController');
+const jobController = require('./jobController');
 
 module.exports = {
   async validateUserRole(req, res, next) {
