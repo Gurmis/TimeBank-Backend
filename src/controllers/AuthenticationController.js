@@ -37,11 +37,11 @@ async function login(req, res) {
         expiresIn: expirationOneHour,
       });
       res.cookie("token", token, {
-        maxAge: 1000*60*60,
+        maxAge: 1000 * 60 * 60,
         httpOnly: false,
-        secure: false,
+        withCredentials: true,
       });
-      
+
       return res.send(token);
     }
   } catch (error) {
@@ -53,7 +53,14 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-  res.clearCookie("token");
+  // res.clearCookie("token");
+  res.cookie("token", "sevas", {
+    maxAge: 1000 * 60 * 60,
+    httpOnly: false,
+    secure: true,
+    withCredentials: true,
+    sameSite: "none",
+  });
   res.status(200).send({ message: "User successfully logged out" });
 }
 
