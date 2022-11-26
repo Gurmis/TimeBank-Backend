@@ -60,6 +60,6 @@ app.use((err, req, res, next) => {
   return;
 });
 
-app.listen(config.app_port, () => {
+app.listen(5000, () => {
   console.log(`Server is running at port: ${config.app_port}`);
 });
