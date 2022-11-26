@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("./controllers/userController");
-const jobController = require("./controllers/JobController");
+const jobController = require("./controllers/jobController");
 const hoursController = require("./controllers/hoursController");
 const likesController = require("./controllers/likesController");
 const ratingsController = require("./controllers/ratingsController");
 const authenticationController = require("./controllers/AuthenticationController");
 const authorizationController = require("./controllers/AuthorizationController");
-const AuthorizationController = require("./controllers/AuthorizationController");
+
 
 
 
