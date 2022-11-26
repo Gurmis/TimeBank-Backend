@@ -7,6 +7,7 @@ const db = require("./src/controllers/dbController");
 const routes = require("./src/routes");
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
+const port = config.app_port;
 const allowedOrigins = [
   "http://localhost:4200",
   "http://localhost:3100",
@@ -42,14 +43,6 @@ app.use(cors({
   }
 }));
 
-var forceSsl = function (req, res, next) {
-  if (req.headers['x-forwarded-proto'] !== 'https') {
-      return res.redirect(['https://', req.get('Host'), req.url].join(''));
-  }
-  return next();
-};
-
-app.use(forceSsl);
 
 app.use(cookieParser());
 app.use(express.json());
@@ -68,6 +61,6 @@ app.use((err, req, res, next) => {
   return;
 });
 
-app.listen(5000, () => {
+app.listen(port, () => {
   console.log(`Server is running at port: ${config.app_port}`);
 });
