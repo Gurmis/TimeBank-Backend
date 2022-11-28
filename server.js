@@ -12,8 +12,6 @@ const cors = require("cors");
 const port = config.app_port;
 const allowedOrigins = [
   "http://localhost:4200",
-  "http://localhost:3100",
-  "http://127.0.0.1:3100",
   "http://127.0.0.1:4200"
 ];
 
