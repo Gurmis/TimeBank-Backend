@@ -1,4 +1,6 @@
 require("dotenv").config();
+const https = require('https');
+const fs = require('fs');
 // const { application } = require("express");
 const express = require("express");
 const config = require("./src/config/config");
@@ -15,19 +17,12 @@ const allowedOrigins = [
   "http://127.0.0.1:4200"
 ];
 
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.indexOf(origin) === -1) {
-//         const msg =
-//           "The CORS policy for this site does not allow access from the specified Origin.";
-//         return callback(new Error(msg), false);
-//       }
-//       return callback(null, true);
-//     },
-//   })
-// );
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
+
+
 app.use(cors({
   credentials: true,
   origin: function(origin, callback){
@@ -61,6 +56,7 @@ app.use((err, req, res, next) => {
   return;
 });
 
-app.listen(port, () => {
+const appS = https.createServer(options, app);
+appS.listen(port, () => {
   console.log(`Server is running at port: ${config.app_port}`);
 });

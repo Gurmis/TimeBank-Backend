@@ -39,7 +39,9 @@ async function login(req, res) {
       res.cookie("token", token, {
         maxAge: 1000 * 60 * 60,
         httpOnly: false,
+        secure: true,
         withCredentials: true,
+        sameSite: "none",
       });
 
       return res.send(token);
@@ -53,14 +55,7 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-  // res.clearCookie("token");
-  res.cookie("token", "sevas", {
-    maxAge: 1000 * 60 * 60,
-    httpOnly: false,
-    secure: true,
-    withCredentials: true,
-    sameSite: "none",
-  });
+  res.clearCookie("token");
   res.status(200).send({ message: "User successfully logged out" });
 }
 
