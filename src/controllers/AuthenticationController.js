@@ -55,7 +55,11 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-  res.clearCookie("token");
+  res.clearCookie("token", {path: '/', domain: 'localhost',
+    httpOnly: false,
+    secure: true,
+    withCredentials: true,
+    sameSite: "none",});
   res.status(200).send({ message: "User successfully logged out" });
 }
 

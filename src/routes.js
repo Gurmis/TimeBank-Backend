@@ -18,7 +18,7 @@ router.post("/users", userController.registerUser);
 router.post("/login", authenticationController.login);
 
 // LOGOUT
-router.get("/logout", authenticationController.logout);
+router.post("/logout", authenticationController.logout);
 
 
 
@@ -48,7 +48,7 @@ router.get("/jobs",  authorizationController.validateJwtToken, jobController.get
 // GET BY ID
 router.get("/jobs/:id",  authorizationController.validateJwtToken, jobController.getById);
 
-// GET BY ID
+// GET BY USER ID
 router.get("/users/:id/jobs",  authorizationController.validateJwtToken, jobController.getByUserId);
 
 // POST
