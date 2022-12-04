@@ -54,7 +54,11 @@ app.use((err, req, res, next) => {
   return;
 });
 
-const appS = https.createServer(options, app);
-appS.listen(port, () => {
+// const appS = https.createServer(options, app);
+// appS.listen(port, () => {
+//   console.log(`Server is running at port: ${config.app_port}`);
+// });
+
+app.listen(port, () => {
   console.log(`Server is running at port: ${config.app_port}`);
 });
