@@ -4,6 +4,8 @@ npm-debug.log
 .nyc
 .env
 .DS_Store
+app.yaml
+.gcloudignore
 
 
 # Logs
