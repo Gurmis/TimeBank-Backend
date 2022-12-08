@@ -12,12 +12,14 @@ const cors = require("cors");
 const port = config.app_port;
 const allowedOrigins = [
   "http://localhost:4200",
-  "http://127.0.0.1:4200"
+  "http://127.0.0.1:4200",
+  "https://timebank-fe.web.app",
+  "https://curious-youtiao-afd610.netlify.app"
 ];
 
 const options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
+  key: fs.readFileSync('src/cert/key.pem'),
+  cert: fs.readFileSync('src/cert/cert.pem')
 };
 
 
