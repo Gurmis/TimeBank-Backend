@@ -17,10 +17,10 @@ const allowedOrigins = [
   "https://curious-youtiao-afd610.netlify.app"
 ];
 
-const options = {
-  key: fs.readFileSync('src/cert/key.pem'),
-  cert: fs.readFileSync('src/cert/cert.pem')
-};
+// const options = {
+//   key: fs.readFileSync('src/cert/key.pem'),
+//   cert: fs.readFileSync('src/cert/cert.pem')
+// };
 
 
 app.use(cors({
