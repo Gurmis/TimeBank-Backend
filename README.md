@@ -4,7 +4,6 @@
 - the main motivation of building this application was to improve my web developement skills
 - only desktop version is finished at the moment
 - it is still in development
-- as it is currently fully deployed, feel free to try it out :)
 - for backend code see repo [TimeBank-Frontend](https://github.com/Gurmis/TimeBank-Frontend)
 
 ___
